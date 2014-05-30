@@ -1,27 +1,38 @@
 var TodoApp = {
-  pendingTodos: [],
-  completedTodos: [],
+  todos: [],
 
   itemSubmitted: function(event){
     var todo = new TodoItem($('#new-todo-name').val());
-    this.pendingTodos.push(todo);
+    this.todos.push(todo);
     this.updateLists();
     $('#new-todo-name').val('');
     event.preventDefault();
   },
 
   itemCompleted: function(event){
-    var targetId = $(event.target).data('id');
-    var todo = $.grep(this.pendingTodos, function(todo){ return todo.id === targetId; })[0];
+    var todo = this.findTodo($(event.target).data('id'));
     todo.complete();
-    this.pendingTodos.splice(this.pendingTodos.indexOf(todo), 1);
-    this.completedTodos.push(todo);
+    this.updateLists();
+  },
+
+  itemDeleted: function(event){
+    var todo = this.findTodo($(event.target).data('id'));
+    this.todos.splice(this.todos.indexOf(todo), 1);
     this.updateLists();
   },
 
   updateLists: function(){
     $('#todo-list-pending, #todo-list-completed').empty();
-    this.pendingTodos.forEach(function(todo){ $('#todo-list-pending').append(todo.html()); });
-    this.completedTodos.forEach(function(todo){ $('#todo-list-completed').append(todo.html()); });
+    this.todos.forEach(function(todo){
+      if(todo.completedAt){
+        $('#todo-list-completed').append(todo.html());
+      } else {
+        $('#todo-list-pending').append(todo.html());
+      }
+    });
+  },
+
+  findTodo: function(targetId){
+    return $.grep(this.todos, function(todo){ return todo.id === targetId; })[0];
   }
 };
