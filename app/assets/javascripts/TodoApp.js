@@ -65,8 +65,10 @@ var TodoApp = {
         filter(function(todo){ return todo.status() === status; }).
         sort(function(a, b){ return a[_this.sorts[status]]() < b[_this.sorts[status]]() ? -1 : 1; });
 
-      var targetList = $('[data-list="' + status + '"] .todos');
-      todosWithStatus.forEach(function(todo){ targetList.append(todo.html()); });
+      var todoList = $('[data-list="' + status + '"]');
+      todoList.find('.count').text(todosWithStatus.length);
+      var appendTarget = todoList.find('.todos');
+      todosWithStatus.forEach(function(todo){ appendTarget.append(todo.html()); });
     });
   },
 
