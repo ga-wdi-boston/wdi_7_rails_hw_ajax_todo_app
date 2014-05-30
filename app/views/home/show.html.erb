@@ -4,7 +4,7 @@
     <div class="col-md-6 col-md-offset-3">
       <form id="new-todo">
         <div class="input-group">
-          <input id="new-todo-name" type="text" class="form-control" placeholder="Enter a new todo item...">
+          <input id="new-todo-name" type="text" class="form-control" placeholder="Enter a new todo item..." autocomplete="off">
           <span class="input-group-btn">
             <button type="submit" class="btn btn-primary">Create</button>
           </span>
@@ -16,43 +16,15 @@
     <div class="col-md-6">
       <div class="panel panel-info">
         <div class="panel-heading"><h4>Todo</h4></div>
-        <table class="table">
-          <tr>
-            <td>Do a thing</td>
-            <td class="date">2014-04-19 3:02pm</td>
-            <td class="buttons">
-              <button type="button" class="btn btn-success">
-                <span class="glyphicon glyphicon-ok"></span> Complete
-              </button>
-              <button type="button" class="btn btn-danger">
-                <span class="glyphicon glyphicon-remove">
-                </span>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Figure out how to even, because right now I can't</td>
-            <td class="date">2014-04-22 5:44am</td>
-            <td class="buttons">
-              <button type="button" class="btn btn-success">
-                <span class="glyphicon glyphicon-ok"></span> Complete
-              </button>
-              <button type="button" class="btn btn-danger">
-                <span class="glyphicon glyphicon-remove">
-                </span>
-              </button>
-            </td>
-          </tr>
+        <table id="todo-list-pending" class="table">
         </table>
       </div>
     </div>
     <div class="col-md-6">
       <div class="panel panel-success">
         <div class="panel-heading"><h4>Done</h4></div>
-        <div class="panel-body">
-          <table class="table">
-          </table>
-        </div>
+        <table id="todo-list-completed" class="table">
+        </table>
       </div>
     </div>
   </div>
