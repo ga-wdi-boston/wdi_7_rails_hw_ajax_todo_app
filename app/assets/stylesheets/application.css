@@ -34,3 +34,7 @@
 #todo-lists .date, #todo-lists .buttons {
   white-space: nowrap;
 }
+
+.sort-buttons button {
+  text-transform: capitalize;
+}

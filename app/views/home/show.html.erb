@@ -14,29 +14,21 @@
   </div>
   <div id="todo-lists" class="row">
     <div class="col-md-6">
-      <div class="panel panel-info">
+      <div class="panel panel-info todo-list" data-list="pending">
         <div class="panel-heading">
-          <div class="btn-group pull-right">
-            <button type="button" class="btn btn-default" data-list="pending" data-sort="date">Date</button>
-            <button type="button" class="btn btn-default" data-list="pending" data-sort="name">Name</button>
-          </div>
+          <div class="btn-group pull-right sort-buttons"></div>
           <h4>Todo</h4>
         </div>
-        <table class="table todo-list" data-list="pending">
-        </table>
+        <table class="table todos"></table>
       </div>
     </div>
     <div class="col-md-6">
-      <div class="panel panel-success">
+      <div class="panel panel-success todo-list" data-list="completed">
         <div class="panel-heading">
-          <div class="btn-group pull-right">
-            <button type="button" class="btn btn-default" data-list="completed" data-sort="date">Date</button>
-            <button type="button" class="btn btn-default" data-list="completed" data-sort="name">Name</button>
-          </div>
+          <div class="btn-group pull-right sort-buttons"></div>
           <h4>Done</h4>
         </div>
-        <table class="table todo-list" data-list="completed">
-        </table>
+        <table class="table todos"></table>
       </div>
     </div>
   </div>
