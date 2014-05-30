@@ -9,20 +9,17 @@ var TodoApp = {
     $('#todo-lists').on('click', '.delete-todo', $.proxy(this.itemDeleted, this));
 
     var _this = this;
-    var sorts = this.sorts;
-    var sortProperties = this.sortProperties;
-
-    Object.keys(sorts).forEach(function(status){
+    Object.keys(_this.sorts).forEach(function(status){
       var buttons = $('[data-list="' + status + '"] .sort-buttons');
 
-      sortProperties.forEach(function(property){
+      _this.sortProperties.forEach(function(property){
         var button = $('<button>').
           attr('type', 'button').
           addClass('btn btn-default').
           data('sort', property).
           text(property).
           on('click', $.proxy(_this.sortChanged, _this));
-        if(sorts[status] === property){ button.addClass('active'); }
+        if(_this.sorts[status] === property){ button.addClass('active'); }
         buttons.append(button);
       });
     });
@@ -61,13 +58,12 @@ var TodoApp = {
 
   updateLists: function(){
     $('.todos').empty();
-    var sorts = this.sorts;
-    var todos = this.todos;
 
-    Object.keys(sorts).forEach(function(status){
-      var todosWithStatus = todos.
+    var _this = this;
+    Object.keys(_this.sorts).forEach(function(status){
+      var todosWithStatus = _this.todos.
         filter(function(todo){ return todo.status() === status; }).
-        sort(function(a, b){ return a[sorts[status]]() < b[sorts[status]]() ? -1 : 1; });
+        sort(function(a, b){ return a[_this.sorts[status]]() < b[_this.sorts[status]]() ? -1 : 1; });
 
       var targetList = $('[data-list="' + status + '"] .todos');
       todosWithStatus.forEach(function(todo){ targetList.append(todo.html()); });
