@@ -1,6 +1,6 @@
 var TodoItem = function(name){
   this.id = TodoItem.generateId();
-  this.name = name;
+  this._name = name;
   this.createdAt = new Date();
   this.completedAt = null;
 };
@@ -12,10 +12,26 @@ TodoItem.generateId = function(){
 };
 
 TodoItem.prototype = {
+  name: function(){
+    return this._name;
+  },
+
+  date: function(){
+    return this.completedAt || this.createdAt;
+  },
+
+  complete: function(){
+    this.completedAt = new Date();
+  },
+
+  status: function(){
+    return this.completedAt ? 'completed' : 'pending';
+  },
+
   html: function(){
     var row = $('<tr>');
-    var nameCell = $('<td>').text(this.name);
-    var dateCell = $('<td>').addClass('date').text(this.dateString());
+    var nameCell = $('<td>').text(this._name);
+    var dateCell = $('<td>').addClass('date').text(this.formatDate(this.date()));
     var buttonsCell = $('<td>').addClass('buttons');
     if(!this.completedAt){
       var completeButton = $('<button>').
@@ -36,25 +52,14 @@ TodoItem.prototype = {
     return row.append(nameCell).append(dateCell).append(buttonsCell);
   },
 
-  complete: function(){
-    this.completedAt = new Date();
-  },
-
-  dateString: function(){
-    if(this.completedAt){
-      return this.formatDate(this.completedAt);
-    } else {
-      return this.formatDate(this.createdAt);
-    }
-  },
-
   formatDate: function(date){
     return date.toLocaleString('en-US', {
       year: 'numeric',
       month: 'numeric',
       day: 'numeric',
       hour: 'numeric',
-      minute: 'numeric'
+      minute: 'numeric',
+      second: 'numeric'
     });
   }
 };
