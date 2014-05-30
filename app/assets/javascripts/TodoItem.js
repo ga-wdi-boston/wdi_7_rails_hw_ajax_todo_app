@@ -1,4 +1,5 @@
 var TodoItem = function(name){
+  if(!name){ throw { validationError: true }; }
   this.id = TodoItem.generateId();
   this._name = name;
   this.createdAt = new Date();

@@ -3,10 +3,14 @@ var TodoApp = {
   sorts: { pending: 'date', completed: 'date' },
 
   itemSubmitted: function(event){
-    var todo = new TodoItem($('#new-todo-name').val());
-    this.todos.push(todo);
-    this.updateLists();
-    $('#new-todo-name').val('');
+    try {
+      var todo = new TodoItem($('#new-todo-name').val());
+      this.todos.push(todo);
+      this.updateLists();
+      $('#new-todo-name').val('');
+    } catch(error) {
+      if(!error.validationError){ throw error; }
+    }
     event.preventDefault();
   },
 
