@@ -38,7 +38,7 @@ var TodoApp = {
     var sorts = this.sorts;
     var todos = this.todos;
 
-    ['pending', 'completed'].forEach(function(status){
+    Object.keys(sorts).forEach(function(status){
       var todosWithStatus = todos.
         filter(function(todo){ return todo.status() === status; }).
         sort(function(a, b){ return a[sorts[status]]() < b[sorts[status]]() ? -1 : 1; });
