@@ -19,7 +19,7 @@ var TodoApp = {
         var button = $('<button>').
           attr('type', 'button').
           addClass('btn btn-default').
-          attr('data-sort', property).
+          data('sort', property).
           text(property).
           on('click', $.proxy(_this.sortChanged, _this));
         if(sorts[status] === property){ button.addClass('active'); }
