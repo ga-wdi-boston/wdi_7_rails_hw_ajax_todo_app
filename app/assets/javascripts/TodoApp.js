@@ -33,6 +33,6 @@ var TodoApp = {
   },
 
   findTodo: function(targetId){
-    return $.grep(this.todos, function(todo){ return todo.id === targetId; })[0];
+    return this.todos.filter(function(todo){ return todo.id === targetId; })[0];
   }
 };
