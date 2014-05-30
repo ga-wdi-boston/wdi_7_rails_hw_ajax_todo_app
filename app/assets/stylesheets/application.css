@@ -13,3 +13,24 @@
  *= require_tree .
  *= require_self
  */
+
+#todo-input {
+  margin-bottom: 1.5em;
+}
+
+.panel-heading h4 {
+  font-weight: bold;
+}
+
+#todo-lists td {
+  vertical-align: middle;
+}
+
+#todo-lists .date {
+  font-size: 85%;
+  opacity: 0.5;
+}
+
+#todo-lists .date, #todo-lists .buttons {
+  white-space: nowrap;
+}
