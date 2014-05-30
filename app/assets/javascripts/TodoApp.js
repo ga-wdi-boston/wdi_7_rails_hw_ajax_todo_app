@@ -11,13 +11,13 @@ var TodoApp = {
   },
 
   itemCompleted: function(event){
-    var todo = this.findTodo($(event.target).data('id'));
+    var todo = this.todoFromButtonEvent(event);
     todo.complete();
     this.updateLists();
   },
 
   itemDeleted: function(event){
-    var todo = this.findTodo($(event.target).data('id'));
+    var todo = this.todoFromButtonEvent(event);
     this.todos.splice(this.todos.indexOf(todo), 1);
     this.updateLists();
   },
@@ -44,7 +44,8 @@ var TodoApp = {
     });
   },
 
-  findTodo: function(targetId){
+  todoFromButtonEvent: function(event){
+    var targetId = $(event.target).data('id');
     return this.todos.filter(function(todo){ return todo.id === targetId; })[0];
   }
 };
