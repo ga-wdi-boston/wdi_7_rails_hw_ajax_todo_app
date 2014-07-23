@@ -37,9 +37,15 @@ TodoItem.prototype = {
       dataTimestamp = $('<td>').text(this.formatDate(this.completedAt));
     }
 
+    // Delete table data
+    var iconDelete = $('<i>').addClass('fi-x');
+    var linkDelete = $('<a>').attr('href', '#').attr('title', 'Delete').append(iconDelete).text('Delete');
+    var dataDelete = $('<td>').append(linkDelete);
+
     // Task table row
     tableRow = $('<tr>').append(dataName)
       .append(dataTimestamp)
+      .append(dataDelete)
       .data('id', this.id);
 
     return tableRow;

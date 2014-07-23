@@ -4,16 +4,17 @@ var TodoList = {
     this.$todoTable = $(todoTableID);
 
     this.$todoForm.submit(this.createTodo.bind(this));
+    this.$todoTable.on('click',"a[title='Delete']", this.deleteTodo.bind(this));
   },
 
   getTodos: function() {
     $.ajax({
       url: "http://localhost:3000/todos",
     })
-    .done(this.showTodos.bind(this));
+    .done(this.showTodoList.bind(this));
   },
 
-  showTodos: function(todos) {
+  showTodoList: function(todos) {
     var todoHTML = "",
       todoItem;
 
@@ -21,7 +22,7 @@ var TodoList = {
 
     todos.forEach(function(todo){
       todoItem = new TodoItem(todo.id, todo.name, todo.created_at, null);
-      $('#todo-table').append(todoItem.html());
+      TodoList.$todoTable.append(todoItem.html());
     });
   },
 
@@ -36,7 +37,7 @@ var TodoList = {
     $.ajax({
       url: "http://localhost:3000/todos",
       type: "POST",
-      data: newTodo,
+      data: newTodo
     })
     .done(this.addTodoToList.bind(this));
   },
@@ -45,5 +46,18 @@ var TodoList = {
     var newTodo = new TodoItem(todo.id, todo.name, todo.created_at, null),
       todoHTML = newTodo.html();
     this.$todoTable.append(todoHTML);
+  },
+
+  deleteTodo: function(event) {
+    var todoID = $(event.target).closest('tr').data('id');
+      todoItem = { todo: { id: todoID }};
+
+    event.preventDefault();
+    $.ajax({
+      url: "http://localhost:3000/todos/" + todoID,
+      type: "DELETE",
+      data: todoItem
+    })
+    .done(this.getTodos.bind(this));
   }
 };
