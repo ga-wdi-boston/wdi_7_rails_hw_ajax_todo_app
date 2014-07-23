@@ -50,7 +50,7 @@ var TodoApp = {
   },
 
   sortChanged: function(event){
-    var button = $(event.target);
+    var button = $(event.currentTarget);
     button.parents('.sort-buttons').find('button').toggleClass('active');
     this.currentSorts[button.parents('.todo-list').data('list')] = button.data('sort');
     this.rebuildLists();
@@ -75,7 +75,7 @@ var TodoApp = {
   },
 
   todoFromButtonEvent: function(event){
-    var targetId = $(event.target).data('id');
+    var targetId = $(event.currentTarget).data('id');
     return this.todos.filter(function(todo){ return todo.id === targetId; })[0];
   }
 };
