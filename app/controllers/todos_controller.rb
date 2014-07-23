@@ -6,7 +6,7 @@ class TodosController < ApplicationController
   respond_to :json
 
   def index
-    @todos = Todo.all
+    @todos = Todo.all.order('created_at')
     respond_with(@todos)
   end
 
@@ -44,6 +44,6 @@ class TodosController < ApplicationController
   private
 
   def todo_params
-    params.require(:todo).permit(:name, :completed_at)
+    params.require(:todo).permit(:name, :completed_at, :in_editing)
   end
 end

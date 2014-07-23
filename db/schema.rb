@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20140722233001) do
   create_table "todos", force: true do |t|
     t.text     "name",         null: false
     t.datetime "completed_at"
+    t.boolean  "in_editing"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -10,6 +10,8 @@ var TodoList = {
 
     this.$todoTable.on('click',"a[title='Delete']", this.deleteTodo.bind(this));
     this.$todoTable.on('click',"a[title='Complete']", this.completeTodo.bind(this));
+    this.$todoTable.on('dblclick', '.todo-name', this.editTodo.bind(this));
+    this.$todoTable.on('submit', '#edit-todo-form', this.submitTodoChange.bind(this));
   },
 
   setActiveClass: function(event) {
@@ -58,8 +60,13 @@ var TodoList = {
     }
 
     filteredTodos.forEach(function(filteredTodo){
-      todoItem = new TodoItem(filteredTodo.id, filteredTodo.name, filteredTodo.created_at, filteredTodo.completed_at);
-      TodoList.$todoTable.append(todoItem.html());
+      todoItem = new TodoItem(filteredTodo.id, filteredTodo.name, filteredTodo.created_at, filteredTodo.completed_at, filteredTodo.in_editing);
+
+      if(todoItem.inEditing === true) {
+        TodoList.$todoTable.append(todoItem.form());
+      } else {
+        TodoList.$todoTable.append(todoItem.html());
+      }
     });
 
     $('#todo-count').text(filteredTodos.length + " " + targetFilter);
@@ -97,6 +104,32 @@ var TodoList = {
   completeTodo: function(event) {
     var todoID = $(event.currentTarget).closest('tr').data('id');
       todoItem = { todo: { id: todoID, completed_at: new Date() }};
+
+    event.preventDefault();
+    $.ajax({
+      url: "/todos/" + todoID,
+      type: "PATCH",
+      data: todoItem
+    })
+    .done(this.getTodos.bind(this));
+  },
+
+  editTodo: function() {
+    var todoID = $(event.target).closest('tr').data('id'),
+      todoItem = { todo: { id: todoID, in_editing: true }};
+
+    $.ajax({
+      url: "/todos/" + todoID,
+      type: "PATCH",
+      data: todoItem
+    })
+    .done(this.getTodos.bind(this));
+  },
+
+  submitTodoChange: function(event) {
+    var todoID = $(event.target).closest('tr').data('id'),
+      $name = $(event.target).find("input[name='edit-name']"),
+      todoItem = { todo: { id: todoID, name: $name.val(), in_editing: false }};
 
     event.preventDefault();
     $.ajax({

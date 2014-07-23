@@ -1,4 +1,4 @@
-var TodoItem = function(id, name, createdAt, completedAt){
+var TodoItem = function(id, name, createdAt, completedAt, inEditing){
   if(!name){ throw { validationError: true }; }
   this.id = id;
   this.name = name;
@@ -8,6 +8,7 @@ var TodoItem = function(id, name, createdAt, completedAt){
   } else {
     this.completedAt = null;
   }
+  this.inEditing = inEditing || false;
 };
 
 TodoItem.prototype = {
@@ -30,7 +31,7 @@ TodoItem.prototype = {
 
   html: function() {
     var dataCompleted = "",
-      dataName = $('<td>').text(this.name),
+      dataName = $('<td>').text(this.name).addClass('todo-name'),
       dataTimestamp = "",
       tableRow = $('<tr>');
 
@@ -49,7 +50,6 @@ TodoItem.prototype = {
     var linkDelete = $('<a>').attr('href', '#').attr('title', 'Delete').append(iconDelete);
     var dataDelete = $('<td>').append(linkDelete);
 
-    // Task table row
     tableRow.append(dataCompleted)
       .append(dataName)
       .append(dataTimestamp)
@@ -57,5 +57,22 @@ TodoItem.prototype = {
       .data('id', this.id);
 
     return tableRow;
+  },
+
+  form: function() {
+    var $tr = $('<tr>').attr('id', 'edit-todo-form'),
+      $td = $('<td>'),
+      $form = $('<form>'),
+      $input = $('<input>').attr('type', 'text').attr('name','edit-name').attr('placeholder', this.name).attr('id', 'edit-todo-name'),
+      $submit = $('<button>').attr('type', 'submit'),
+      dataCompleted = $('<td>');
+
+    $form.append($input).append($submit);
+    $td.append($form);
+    $tr.append(dataCompleted)
+      .append($td)
+      .data('id', this.id);
+
+    return $tr;
   }
 };
