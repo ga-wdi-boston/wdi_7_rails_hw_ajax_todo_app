@@ -123,8 +123,19 @@ var TodoApp = {
 
   // User completed a todo item
   itemCompleted: function(todo){
-    todo.complete();
-    this.rebuildLists();
+    var completedAt = new Date();
+
+    $.ajax({
+      url: Routes.todoPath(todo.id),
+      type: 'PATCH',
+      dataType: 'json',
+      data: { todo: { completed_at: completedAt }}
+    })
+    .done($.proxy(function(){
+      todo.completedAt = completedAt;
+      this.rebuildLists();
+    }, this))
+    .fail(this.genericFailure);
   },
 
   // User started editing a todo item. Since most app actions cause the lists to
