@@ -1,19 +1,8 @@
 var TodoApp = {
 
-  tasks: [],
-
-  initialize: function(){
-    $('#task-form').on('submit',$.proxy(this.createTask, this));
-    $('#tasks-list').on('click', '#delete-button',$.proxy(this.deleteTask,this));
-    $('#tasks-list').on('click', '#done-button',$.proxy(this.doneTask, this));
-    $('#finished-list').on('click', '#delete-button',$.proxy(this.deleteTask,this));
-    TodoApp.getTasks();
-
-  },
-
   updateTasks: function(tasks){
-      $('#tasks-list').empty();
-      $('#finished-list').empty();
+    $('#tasks-list').empty();
+    $('#finished-list').empty();
 
     var newTask;
 
@@ -43,7 +32,7 @@ var TodoApp = {
     .done(this.updateTasks.bind(this));
   },
   addTaskToList: function(task){
-    var newTask = new Task(task.id, task.task);
+    var newTask = new TodoItem(task.id, task.task);
     if(task.completed_at !== null) {
       $('#finished-list').append(newTask.html(task));
     } else {
@@ -62,16 +51,21 @@ var TodoApp = {
         data: requestObj,
         dataType: 'json'
       })
-    .done(this.addTasksToList.bind(this));
+    .done(this.addTaskToList.bind(this));
       $('#task-field').val('');
     }
     event.preventDefault();
   },
 
   deleteTask: function(event){
-    task = this.getTask(event);
-    this.tasks = this.tasks.filter(function(obj) {return obj.id !== task.id;});
-    this.updateTasks();
+    Id = event.target.parentElement.getAttribute('data-id');
+    //this.tasks = this.tasks.filter(function(obj) {return obj.id !== task.id;});
+    $.ajax({
+      type: "DELETE",
+      url: 'http://localhost:3000/tasks/' + Id,
+      dataType: 'json'
+    })
+    .done(this.addTaskToList().bind(this));
     event.preventDefault();
   },
 
@@ -82,8 +76,18 @@ var TodoApp = {
     event.preventDefault();
   },
 
-  getTask: function(event){
-    id = $(event.target).parent().data('id');
-    return $.grep(this.tasks,function(task){return task.id === id})[0];
+  // getTask: function(event){
+  //   id = $(event.target).parent().data('id');
+  //   return $.grep(this.tasks,function(task){return task.id === id})[0];
+  // },
+
+  initialize: function(){
+    $('#task-form').on('submit',$.proxy(this.createTask, this));
+    $('#tasks-list').on('click', '#delete-button',$.proxy(this.deleteTask,this));
+    $('#tasks-list').on('click', '#done-button',$.proxy(this.doneTask, this));
+    $('#finished-list').on('click', '#delete-button',$.proxy(this.deleteTask,this));
+    TodoApp.getTasks();
+
   }
+
 };

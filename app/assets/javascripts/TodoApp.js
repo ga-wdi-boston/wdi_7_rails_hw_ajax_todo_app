@@ -21,7 +21,7 @@ var TodoItem = function(task){
     },
     html: function(task){
       var doneButton = '<button type="button" class="btn btn-success btn-sm" id = "done-button">Done</button>';
-      var deleteButton = '<button type="button" class="btn btn-success btn-sm" id = "delete-button">Delete</button>';
+      var deleteButton = '<button type="button" class="btn btn-danger btn-sm" id = "delete-button">Delete</button>';
       if (task.completed_at === null){
         list = $('<li>').text(task.task).append(doneButton,deleteButton).attr('data-id',task.id);
       } else {
