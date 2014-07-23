@@ -75,11 +75,18 @@ var TodoList = {
   createTodo: function(event) {
     var $form = $(event.currentTarget),
       $name = $form.find("input[name='name']"),
+      newTodo;
+
+    event.preventDefault();
+
+    if($name.val() === "") {
+      throw error;
+    } else {
       newTodo = { todo: { name: $name.val() }};
+    }
 
     $name.val("");
 
-    event.preventDefault();
     $.ajax({
       url: "/todos",
       type: "POST",
