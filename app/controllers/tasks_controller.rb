@@ -27,6 +27,22 @@ class TasksController < ApplicationController
     end
   end
 
+  def update
+    @task = Task.find(task_params[:id])
+
+    if @task.update(task_params)
+      respond_with(@task) do |format|
+        format.json {
+          if @task.valid?
+            render json: @task
+          else
+            render json: @task.errors, status: :unprocessable_entity
+          end
+        }
+      end
+    end
+  end
+
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
@@ -39,6 +55,6 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:id, :task)
+    params.require(:task).permit(:id, :task, :completed_at)
   end
 end

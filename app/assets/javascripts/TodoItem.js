@@ -59,7 +59,6 @@ var TodoApp = {
 
   deleteTask: function(event){
     Id = event.target.parentElement.getAttribute('data-id');
-    //this.tasks = this.tasks.filter(function(obj) {return obj.id !== task.id;});
     $.ajax({
       type: "DELETE",
       url: 'http://localhost:3000/tasks/' + Id,
@@ -70,9 +69,18 @@ var TodoApp = {
   },
 
   doneTask: function(event){
-    task = this.getTask(event);
-    task.markCompleted();
-    this.updateTasks();
+    Id = event.target.parentElement.getAttribute('data-id');
+    requestObj = {task:  {id: Id, completed_at: Date()}};
+    $.ajax({
+      type: "PUT",
+      url: 'http://localhost:3000/tasks/' + Id,
+      data: requestObj,
+      dataType: 'json'
+    })
+    .done(this.addTaskToList.bind(this))
+    .done(event.target.parentNode.remove());
+    //task.markCompleted();
+    //this.updateTasks();
     event.preventDefault();
   },
 
