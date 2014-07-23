@@ -20,6 +20,12 @@
     <div class="todo-header">
       <h3>Todo Tasks</h3>
     </div>
-    <table id="todo-table"></table>
+    <dl id="todo-filters" class="sub-nav">
+      <dt>Filter:</dt>
+      <dd class="active"><a href="#" id="all-todos">All</a></dd>
+      <dd><a href="#" id="active-todos">Active</a></dd>
+      <dd><a href="#" id="completed-todos">Completed</a></dd>
+    </dl>
+    <table id="todo-table" data-list="all-todos"></table>
   </div>
 </div>
