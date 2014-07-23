@@ -1,10 +1,10 @@
-var Todo = Todo || {};
+var ToDo = ToDo || {};
 
-Todo.RailsApi = function(){
+ToDo.RailsApi = function(){
   this.url = "http://localhost:3000/todos";
 };
 
-Todo.RailsApi.prototype = {
+ToDo.RailsApi.prototype = {
   saveOrUpdate : function(data, callback, id){
     callback = callback || function(){};
     var url = this.url,
@@ -20,7 +20,7 @@ Todo.RailsApi.prototype = {
     $.ajax({
       url : url,
       type : type,
-      data : data,
+      data : {todo : data},
       dataType : "json"
     })
     .done(function(data){
@@ -32,9 +32,9 @@ Todo.RailsApi.prototype = {
     callback = callback || function(){};
     var that = this;
     $.ajax({
-      url : this.url + "/query/",
+      url : this.url + "/query",
       type : "GET",
-      data : query,
+      data : {todo: query},
       dataType : "json"
     })
     .done(function(data){

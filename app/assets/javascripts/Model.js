@@ -1,10 +1,10 @@
-var Todo = Todo || {};
+var ToDo = ToDo || {};
 
-Todo.Model = function(storage){
+ToDo.Model = function(storage){
   this.storage = storage;
 };
 
-Todo.Model.prototype = {
+ToDo.Model.prototype = {
   create : function(title, callback){
     callback = callback || function(){};
     var data = {title: title};
@@ -36,8 +36,9 @@ Todo.Model.prototype = {
     };
 
     this.storage.findAll(function(data){
+      data = data || [];
       data.forEach(function(item){
-        if(item.is_completed) {
+        if(item.is_complete) {
           status.completed += 1;
         } else {
           status.active += 1;

@@ -1,6 +1,6 @@
-var Todo = Todo || {};
+var ToDo = ToDo || {};
 
-Todo.View = function(template){
+ToDo.View = function(template){
   this.template = template;
 
   this.$todoList = $('#todo-list');
@@ -15,6 +15,7 @@ Todo.View = function(template){
   this.$clearCompleted = $('#clear-completed');
   this.$toggleAll = $('#toggle-all');
   this.$newTodo = $('#new-todo');
+  this.$updateId = $('#update-id');
   this.$newSubmitBtn = $('#todo-submit');
 
   // Direct all Enter hits to the form button
@@ -26,13 +27,13 @@ Todo.View = function(template){
   });
 };
 
-Todo.View.prototype = {
+ToDo.View.prototype = {
   bind : function(action, handler){
     var that = this;
 
     if(action === "create") {
-      this.$todoSubmit.on("click", function(event){
-        handler(that.newTodo.val());
+      this.$newSubmitBtn.on("click", function(event){
+        handler(that.$newTodo.val(), that.$updateId.val());
         event.preventDefault();
       });
 
@@ -52,7 +53,7 @@ Todo.View.prototype = {
       $('#todo-active-list, #todo-completed-list').on("click", ".toggle", function(event){
         handler({
           id : that._itemId(this),
-          is_completed : this.checked
+          is_complete : this.checked
         });
       });
 
@@ -80,10 +81,14 @@ Todo.View.prototype = {
     var that = this;
     var commands = {
       showActive : function(){
+        var activeOnly = true;
         that.$todoActiveList.html(that.template.show(args.data, args.comparator));
+        $('#todo-active-list .item-completed').remove();
       },
       showCompleted : function(){
+        var activeOnly = false;
         that.$todoCompletedList.html(that.template.show(args.data, args.comparator));
+        $('#todo-completed-list .item-created').remove();
       },
       updateCount : function(){
         that.$todoCounter.text(args.total);
@@ -92,6 +97,8 @@ Todo.View.prototype = {
       },
       clearForm : function(){
         that.$newTodo.val('');
+        that.$updateId.val('');
+        that.$newSubmitBtn.text('Create');
       },
       editItem : function(){
         that._editItem(args.id, args.title);
@@ -103,7 +110,7 @@ Todo.View.prototype = {
         that._removeItem(args.id);
       },
       completeItem : function(){
-        that._completeItem(args.id, args.is_completed);
+        that._completeItem(args.id, args.is_complete);
       }
     };
 
@@ -116,15 +123,11 @@ Todo.View.prototype = {
   },
 
   _editItem : function(id, title){
-    var input = document.createElement('input');
-    input.className = 'edit';
+    this.$newTodo.val(title);
+    this.$updateId.val(id);
+    this.$newSubmitBtn.text('Save');
 
-    var $e = $('data-id="' + id + '"');
-    $e.addClass('editing');
-    $e.append(input);
-
-    input.focus();
-    input.value = title;
+    this.$newTodo.focus();
   },
 
   _updateItem : function(id, title){

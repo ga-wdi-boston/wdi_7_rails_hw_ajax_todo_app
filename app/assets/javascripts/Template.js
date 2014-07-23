@@ -1,13 +1,13 @@
-var Todo = Todo || {};
+var ToDo = ToDo || {};
 
-Todo.Template = function(){
+ToDo.Template = function(){
   this.listTemplate =
   '<li data-id="%id%" class="td-item">' +
     '<div class="td-item-body-container">' +
       '<div class="td-item-body">' +
         '<div class="%completed% td-item-title">%title%</div>' +
-        '<div class="td-item-meta">Created: %createdAt%</div>' +
-        '<div id="item-completed" class="td-item-meta">Completed: %completedAt%</div>' +
+        '<div class="td-item-meta item-created">Created: %createdAt%</div>' +
+        '<div class="td-item-meta item-completed">Completed: %completedAt%</div>' +
       '</div>' +
     '</div>' +
     '<div class="td-item-control-container">' +
@@ -16,11 +16,12 @@ Todo.Template = function(){
         '<span class="">Complete</span>' +
       '</div>'  +
       '<button class="destroy td-item-control">Delete</button>' +
+      '<button class="edit td-item-control">Edit</button>' +
     '</div>' +
   '</li>';
 };
 
-Todo.Template.prototype = {
+ToDo.Template.prototype = {
   show : function(data, comparator){
     data = data || [];
     comparator = comparator || this.Controller._idComparator;
@@ -33,7 +34,7 @@ Todo.Template.prototype = {
         checked = '',
         completedAt = '';
 
-      if(data[i].is_completed) {
+      if(data[i].is_complete) {
         completed = 'completed';
         checked = 'checked';
         completedAt = data[i].completed_at.toLocaleString();
