@@ -29,7 +29,7 @@ var TodoList = {
 
   getTodos: function() {
     $.ajax({
-      url: "http://localhost:3000/todos",
+      url: "/todos",
     })
     .done(this.showTodoList.bind(this));
   },
@@ -68,17 +68,11 @@ var TodoList = {
 
     event.preventDefault();
     $.ajax({
-      url: "http://localhost:3000/todos",
+      url: "/todos",
       type: "POST",
       data: newTodo
     })
-    .done(this.addTodoToList.bind(this));
-  },
-
-  addTodoToList: function(todo) {
-    var newTodo = new TodoItem(todo.id, todo.name, todo.created_at, null),
-      todoHTML = newTodo.html();
-    this.$todoTable.append(todoHTML);
+    .done(this.getTodos.bind(this));
   },
 
   deleteTodo: function(event) {
@@ -87,7 +81,7 @@ var TodoList = {
 
     event.preventDefault();
     $.ajax({
-      url: "http://localhost:3000/todos/" + todoID,
+      url: "/todos/" + todoID,
       type: "DELETE",
       data: todoItem
     })
@@ -100,7 +94,7 @@ var TodoList = {
 
     event.preventDefault();
     $.ajax({
-      url: "http://localhost:3000/todos/" + todoID,
+      url: "/todos/" + todoID,
       type: "PATCH",
       data: todoItem
     })
