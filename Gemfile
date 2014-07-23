@@ -26,7 +26,3 @@ gem 'foundation-rails'
 
 # add foundation icons
 gem 'foundation-icons-sass-rails'
-
-gem "js-routes"
-
-gem 'handlebars_assets'

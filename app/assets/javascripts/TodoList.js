@@ -8,8 +8,8 @@ var TodoList = {
 
     this.$todoFilters.on('click', 'a', this.setActiveClass.bind(this));
 
-    this.$todoTable.on('click',"a[title='Delete']", this.deleteTodo.bind(this));
-    this.$todoTable.on('click',"a[title='Complete']", this.completeTodo.bind(this));
+    this.$todoTable.on('click',"a[title='delete']", this.deleteTodo.bind(this));
+    this.$todoTable.on('click',"a[title='complete']", this.completeTodo.bind(this));
     this.$todoTable.on('dblclick', '.todo-name', this.editTodo.bind(this));
     this.$todoTable.on('submit', '#edit-todo-form', this.submitTodoChange.bind(this));
   },
@@ -59,17 +59,9 @@ var TodoList = {
       targetFilter = "Completed";
     }
 
-    filteredTodos.forEach(function(filteredTodo){
-      todoItem = new TodoItem(filteredTodo.id, filteredTodo.name, filteredTodo.created_at, filteredTodo.completed_at, filteredTodo.in_editing);
-
-      if(todoItem.inEditing === true) {
-        TodoList.$todoTable.append(todoItem.form());
-      } else {
-        TodoList.$todoTable.append(todoItem.html());
-      }
-    });
-
     $('#todo-count').text(filteredTodos.length + " " + targetFilter);
+
+    this.$todoTable.html(HandlebarsTemplates.table(filteredTodos));
   },
 
   createTodo: function(event) {

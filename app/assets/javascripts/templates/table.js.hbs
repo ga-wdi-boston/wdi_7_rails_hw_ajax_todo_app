@@ -1,0 +1,44 @@
+{{#each this}}
+  {{#if completed_at}}
+    <tr data-id="{{id}}" class="completed">
+  {{else}}
+    <tr data-id="{{id}}">
+  {{/if}}
+    {{!-- complete todo --}}
+    <td>
+      {{#unless completed_at}}
+        <a href="#" title="complete">
+          <i class="fi-check"></i>
+        </a>
+      {{/unless}}
+    </td>
+
+    {{!-- todo name --}}
+    <td class="todo-name">
+    {{#if in_editing}}
+      <form id="edit-todo-form">
+        <input type="text" name="edit-name" placeholder="{{name}}" id="edit-todo-name">
+        <button type="submit"></button>
+      </form>
+    {{else}}
+      {{name}}
+    {{/if}}
+    </td>
+
+    {{!-- todo timestamp --}}
+    <td>
+      {{#if completed_at}}
+        {{formatDate completed_at}}
+      {{else}}
+        {{formatDate created_at}}
+      {{/if}}
+    </td>
+
+    {{!-- remove todo --}}
+    <td>
+      <a href="#" title="delete">
+        <i class="fi-x"></i>
+      </a>
+    </td>
+  </tr>
+{{/each}}
