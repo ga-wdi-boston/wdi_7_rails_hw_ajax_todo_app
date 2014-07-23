@@ -23,3 +23,6 @@ gem 'active_model_serializers'
 gem 'handlebars_assets'
 
 gem 'foundation-rails'
+
+# add foundation icons
+gem 'foundation-icons-sass-rails'

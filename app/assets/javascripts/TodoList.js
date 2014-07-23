@@ -5,6 +5,7 @@ var TodoList = {
 
     this.$todoForm.submit(this.createTodo.bind(this));
     this.$todoTable.on('click',"a[title='Delete']", this.deleteTodo.bind(this));
+    this.$todoTable.on('click',"a[title='Complete']", this.completeTodo.bind(this));
   },
 
   getTodos: function() {
@@ -21,7 +22,8 @@ var TodoList = {
     this.$todoTable.empty();
 
     todos.forEach(function(todo){
-      todoItem = new TodoItem(todo.id, todo.name, todo.created_at, null);
+      todoItem = new TodoItem(todo.id, todo.name, todo.created_at, todo.completed_at);
+      debugger;
       TodoList.$todoTable.append(todoItem.html());
     });
   },
@@ -56,6 +58,19 @@ var TodoList = {
     $.ajax({
       url: "http://localhost:3000/todos/" + todoID,
       type: "DELETE",
+      data: todoItem
+    })
+    .done(this.getTodos.bind(this));
+  },
+
+  completeTodo: function(event) {
+    var todoID = $(event.target).closest('tr').data('id');
+      todoItem = { todo: { id: todoID, completed_at: new Date() }};
+
+    event.preventDefault();
+    $.ajax({
+      url: "http://localhost:3000/todos/" + todoID,
+      type: "PATCH",
       data: todoItem
     })
     .done(this.getTodos.bind(this));

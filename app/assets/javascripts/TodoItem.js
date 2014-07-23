@@ -3,7 +3,11 @@ var TodoItem = function(id, name, createdAt, completedAt){
   this.id = id;
   this.name = name;
   this.createdAt = new Date(createdAt);
-  this.completedAt = null;
+  if(completedAt !== null) {
+    this.completedAt = new Date(completedAt);
+  } else {
+    this.completedAt = null;
+  }
 };
 
 TodoItem.prototype = {
@@ -25,25 +29,29 @@ TodoItem.prototype = {
   },
 
   html: function() {
-    // Task table data
-    var dataName = $('<td>').text(this.name),
+    var dataCompleted = "",
+      dataName = $('<td>').text(this.name),
       dataTimestamp = "",
-      tableRow;
+      tableRow = $('<tr>');
 
-    // Created at table data
     if(this.completedAt === null) {
+      var iconCompleted = $('<i>').addClass('fi-check');
+      var linkCompleted = $('<a>').attr('href', '#').attr('title', 'Complete').append(iconCompleted).text('Complete');
+      dataCompleted = $('<td>').append(linkCompleted);
       dataTimestamp = $('<td>').text(this.formatDate(this.createdAt));
     } else {
+      dataCompleted = $('<td>');
       dataTimestamp = $('<td>').text(this.formatDate(this.completedAt));
+      tableRow.addClass('completed');
     }
 
-    // Delete table data
     var iconDelete = $('<i>').addClass('fi-x');
     var linkDelete = $('<a>').attr('href', '#').attr('title', 'Delete').append(iconDelete).text('Delete');
     var dataDelete = $('<td>').append(linkDelete);
 
     // Task table row
-    tableRow = $('<tr>').append(dataName)
+    tableRow.append(dataCompleted)
+      .append(dataName)
       .append(dataTimestamp)
       .append(dataDelete)
       .data('id', this.id);
