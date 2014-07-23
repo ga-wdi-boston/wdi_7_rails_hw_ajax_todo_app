@@ -30,9 +30,9 @@ TodoItem.prototype = {
   },
 
   html: function() {
-    var dataCompleted = "",
+    var dataCompleted,
       dataName = $('<td>').text(this.name).addClass('todo-name'),
-      dataTimestamp = "",
+      dataTimestamp,
       tableRow = $('<tr>');
 
     if(this.completedAt === null) {
@@ -65,12 +65,31 @@ TodoItem.prototype = {
       $form = $('<form>'),
       $input = $('<input>').attr('type', 'text').attr('name','edit-name').attr('placeholder', this.name).attr('id', 'edit-todo-name'),
       $submit = $('<button>').attr('type', 'submit'),
+      dataCompleted,
+      dataTimestamp,
+      dataDelete;
+
+    if(this.completedAt === null) {
+      var iconCompleted = $('<i>').addClass('fi-check');
+      var linkCompleted = $('<a>').attr('href', '#').attr('title', 'Complete').append(iconCompleted);
+      dataCompleted = $('<td>').append(linkCompleted);
+      dataTimestamp = $('<td>').text(this.formatDate(this.createdAt));
+    } else {
       dataCompleted = $('<td>');
+      dataTimestamp = $('<td>').text(this.formatDate(this.completedAt));
+      $tr.addClass('completed');
+    }
+
+    var iconDelete = $('<i>').addClass('fi-x');
+    var linkDelete = $('<a>').attr('href', '#').attr('title', 'Delete').append(iconDelete);
+    dataDelete = $('<td>').append(linkDelete);
 
     $form.append($input).append($submit);
     $td.append($form);
     $tr.append(dataCompleted)
       .append($td)
+      .append(dataTimestamp)
+      .append(dataDelete)
       .data('id', this.id);
 
     return $tr;

@@ -25,10 +25,8 @@ $tertiary-color: #A7A7A7;
   table {
     width: 100%;
 
-    .edit-row {
-      -moz-column-span: all;
-      -webkit-column-span: all;
-      column-span: all;
+    input {
+      margin: 0;
     }
 
     button {
