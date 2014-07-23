@@ -65,7 +65,7 @@ var TodoApp = {
       url: 'http://localhost:3000/tasks/' + Id,
       dataType: 'json'
     })
-    .done(this.addTaskToList().bind(this));
+    .done(event.target.parentNode.remove());
     event.preventDefault();
   },
 
