@@ -17,6 +17,12 @@ class TodosController < ApplicationController
     respond_with(todo)
   end
 
+  def destroy
+    todo = Todo.find(params[:id])
+    todo.destroy
+    respond_with(todo)
+  end
+
   private
 
   def todo_params

@@ -165,8 +165,16 @@ var TodoApp = {
 
   // User deleted a todo item
   itemDeleted: function(todo){
-    this.todos.splice(this.todos.indexOf(todo), 1);
-    this.rebuildLists();
+    $.ajax({
+      url: Routes.todoPath(todo.id),
+      type: 'DELETE',
+      dataType: 'json'
+    })
+    .done($.proxy(function(){
+      this.todos.splice(this.todos.indexOf(todo), 1);
+      this.rebuildLists();
+    }, this))
+    .fail(this.genericFailure);
   },
 
   // User changed the sorting of a list
