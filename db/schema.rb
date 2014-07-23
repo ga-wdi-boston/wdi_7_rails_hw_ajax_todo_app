@@ -11,20 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140723005213) do
+ActiveRecord::Schema.define(version: 20140723134454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "todos", force: true do |t|
     t.string   "title"
-    t.boolean  "isComplete",   default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
+    t.boolean  "is_complete",  default: false, null: false
   end
 
   add_index "todos", ["completed_at"], name: "index_todos_on_completed_at", using: :btree
+  add_index "todos", ["is_complete"], name: "index_todos_on_is_complete", using: :btree
   add_index "todos", ["title"], name: "index_todos_on_title", using: :btree
 
 end
