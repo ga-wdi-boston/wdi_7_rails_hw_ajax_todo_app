@@ -37,26 +37,32 @@ var TodoList = {
   showTodoList: function(todos) {
     var todoHTML = "",
       todoItem,
-      filteredTodos;
+      filteredTodos,
+      targetFilter;
 
     this.$todoTable.empty();
 
     if(this.$todoTable.data('list') === 'all-todos') {
       filteredTodos = todos;
+      targetFilter = "Total";
     } else if(this.$todoTable.data('list') === 'active-todos') {
       filteredTodos = todos.filter(function(todo) {
         return todo.completed_at === null;
       });
+      targetFilter = "Active";
     } else if(this.$todoTable.data('list') === 'completed-todos') {
       filteredTodos = todos.filter(function(todo) {
         return todo.completed_at !== null;
       });
+      targetFilter = "Completed";
     }
 
     filteredTodos.forEach(function(filteredTodo){
       todoItem = new TodoItem(filteredTodo.id, filteredTodo.name, filteredTodo.created_at, filteredTodo.completed_at);
       TodoList.$todoTable.append(todoItem.html());
     });
+
+    $('#todo-count').text(filteredTodos.length + " " + targetFilter);
   },
 
   createTodo: function(event) {
