@@ -1,19 +1,14 @@
-var TodoItem = function(name){
-  if(!name){ throw { validationError: true }; }
-  this.id = TodoItem.generateId();
-  this._name = name;
-  this.createdAt = new Date();
-  this.completedAt = null;
+var TodoItem = function(attrs){
+  attrs = attrs || {};
+  if(!attrs.name){ throw { validationError: true }; }
+  this.id = attrs.id;
+  this._name = attrs.name;
+  this.createdAt = attrs.created_at || new Date();
+  this.completedAt = attrs.completed_at || null;
 };
 
 TodoItem.statuses = ['todo', 'done']; // Values that `status` could return
 TodoItem.sortableProperties = ['date', 'name']; // Actually names of functions
-
-TodoItem.nextId = 0;
-TodoItem.generateId = function(){
-  TodoItem.nextId += 1;
-  return TodoItem.nextId;
-};
 
 TodoItem.prototype = {
   name: function(){

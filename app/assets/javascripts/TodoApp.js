@@ -6,6 +6,7 @@ var TodoApp = {
     this.initializeLists();
     this.initializeSorts();
     this.createSortButtons();
+    this.loadInitialData();
 
     $('#new-todo').on('submit', $.proxy(this.itemSubmitted, this));
     this.createTodoHandler('click', '.complete-todo', this.itemCompleted);
@@ -73,6 +74,20 @@ var TodoApp = {
       event.preventDefault();
     }, this);
     $('#todo-lists').on(event, selector, handlerWrapper);
+  },
+
+  // Populate the local list of todos from the database
+  loadInitialData: function(){
+    $.ajax({
+      dataType: 'json',
+      url: Routes.todosPath()
+    })
+    .done($.proxy(function(data){
+      this.todos = data.map(function(attrs){
+        return new TodoItem(attrs);
+      });
+      this.rebuildLists();
+    }, this));
   },
 
   // User submitted a new todo item. Validation errors thrown by the constructor
