@@ -1,0 +1,82 @@
+body {
+  color: #666 !important;
+  font-family: 'Georgia', 'Times New Roman', serif !important;
+}
+
+#todo-submit {
+  margin-bottom: 3px;
+}
+
+.center {
+  text-align: center;;
+}
+
+.row {
+  border-bottom: 1px dotted #999;
+}
+
+.nav-pills {
+  margin: 0 auto;
+}
+
+.nav-pills li a {
+  line-height: 1rem;
+  margin: 2px 0;
+  padding: 5px 15px !important;
+}
+
+.td-nav-pill {
+  line-height: 1rem;
+  margin: 2px 0;
+  padding: 5px 15px 5px 5px;
+}
+
+.td-list-header {
+  margin-left: 5px;
+}
+
+.td-list-container {
+  background: rgb(238, 238, 238);
+  height: 200px;
+  overflow-y: scroll;
+  margin-bottom: 5px;
+  padding-left: 20px !important;
+}
+
+.td-item {
+  border-bottom: 1px dotted #666;
+}
+
+.td-item-body-container {
+  display: inline-block;
+  width: 75%;
+}
+
+.td-item-control-container {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.td-item-title {
+  font-weight: bold;
+}
+
+.td-item-meta, .td-item-control-container {
+  color: #999;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+}
+
+.td-item-meta {
+  line-height: 15px;
+  padding: 1px 0;
+}
+
+.td-item-control {
+  color: #666;
+}
+
+.completed {
+  text-decoration: line-through;
+}
+
