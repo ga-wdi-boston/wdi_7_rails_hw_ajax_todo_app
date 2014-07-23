@@ -23,7 +23,6 @@ var TodoList = {
 
     todos.forEach(function(todo){
       todoItem = new TodoItem(todo.id, todo.name, todo.created_at, todo.completed_at);
-      debugger;
       TodoList.$todoTable.append(todoItem.html());
     });
   },

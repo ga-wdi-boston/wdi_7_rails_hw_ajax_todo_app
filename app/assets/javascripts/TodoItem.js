@@ -36,7 +36,7 @@ TodoItem.prototype = {
 
     if(this.completedAt === null) {
       var iconCompleted = $('<i>').addClass('fi-check');
-      var linkCompleted = $('<a>').attr('href', '#').attr('title', 'Complete').append(iconCompleted).text('Complete');
+      var linkCompleted = $('<a>').attr('href', '#').attr('title', 'Complete').append(iconCompleted);
       dataCompleted = $('<td>').append(linkCompleted);
       dataTimestamp = $('<td>').text(this.formatDate(this.createdAt));
     } else {
@@ -46,7 +46,7 @@ TodoItem.prototype = {
     }
 
     var iconDelete = $('<i>').addClass('fi-x');
-    var linkDelete = $('<a>').attr('href', '#').attr('title', 'Delete').append(iconDelete).text('Delete');
+    var linkDelete = $('<a>').attr('href', '#').attr('title', 'Delete').append(iconDelete);
     var dataDelete = $('<td>').append(linkDelete);
 
     // Task table row
