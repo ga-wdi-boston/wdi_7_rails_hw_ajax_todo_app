@@ -1,10 +1,9 @@
 var TodoItem = function(attrs){
   attrs = attrs || {};
-  if(!attrs.name){ throw { validationError: true }; }
   this.id = attrs.id;
   this._name = attrs.name;
-  this.createdAt = attrs.created_at || new Date();
-  this.completedAt = attrs.completed_at || null;
+  this.createdAt = attrs.created_at ? new Date(attrs.created_at) : new Date();
+  this.completedAt = attrs.completed_at ? new Date(attrs.completed_at) : null;
 };
 
 TodoItem.statuses = ['todo', 'done']; // Values that `status` could return

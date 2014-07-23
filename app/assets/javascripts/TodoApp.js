@@ -87,21 +87,38 @@ var TodoApp = {
         return new TodoItem(attrs);
       });
       this.rebuildLists();
-    }, this));
+    }, this))
+    .fail(this.genericFailure);
   },
 
-  // User submitted a new todo item. Validation errors thrown by the constructor
-  // are ignored, since for now the only possible error is that there's no text.
+  // User submitted a new todo item
   itemSubmitted: function(event){
-    try {
-      var todo = new TodoItem($('#new-todo-name').val());
-      this.todos.push(todo);
-      this.rebuildLists();
-      $('#new-todo-name').val('');
-    } catch(error) {
-      if(!error.validationError){ throw error; }
-    }
     event.preventDefault();
+    var $form = $(event.currentTarget);
+    $form.find('button').prop('disabled', true);
+
+    $.ajax({
+      url: $form.attr('action'),
+      type: 'POST',
+      dataType: 'json',
+      data: { todo: { name: $('#todo_name').val() }} // TODO: Real serialization
+    })
+    .done($.proxy(function(data){
+      this.todos.push(new TodoItem(data));
+      this.rebuildLists();
+      $form.find('input').val('');
+    }, this))
+    .fail($.proxy(function(jqXHR){
+      if(jqXHR.status === 422){
+        // TODO: Handle validation errors
+        // (doesn't matter right now since the only validation is presence)
+      } else {
+        this.genericFailure(jqXHR);
+      }
+    }, this))
+    .always(function(){
+      $form.find('button').prop('disabled', false);
+    });
   },
 
   // User completed a todo item
@@ -169,5 +186,9 @@ var TodoApp = {
         appendTarget.append(todo.html());
       });
     }, this);
+  },
+
+  genericFailure: function(jqXHR){
+    alert('Error ' + jqXHR.status + ' occurred. Try refreshing maybe?');
   }
 };
