@@ -1,8 +1,8 @@
 class TasksController < ApplicationController
 
-  # def default_serializer_options
-  #   {root: false}
-  # end
+  def default_serializer_options
+    {root: false}
+  end
 
   respond_to :json
 
@@ -39,6 +39,6 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:id, :title, :body)
+    params.require(:task).permit(:id, :task)
   end
 end

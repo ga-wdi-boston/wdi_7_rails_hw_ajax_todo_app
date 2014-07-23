@@ -22,10 +22,10 @@ var TodoItem = function(task){
     html: function(task){
       var doneButton = '<button type="button" class="btn btn-success btn-sm" id = "done-button">Done</button>';
       var deleteButton = '<button type="button" class="btn btn-success btn-sm" id = "delete-button">Delete</button>';
-      if (task.completedAt === null){
-        list = $('<li>').text(this.task).append(doneButton,deleteButton).attr('data-id',this.id);
+      if (task.completed_at === null){
+        list = $('<li>').text(task.task).append(doneButton,deleteButton).attr('data-id',task.id);
       } else {
-        list = $('<li>').text(this.task).append(deleteButton).attr('data-id',this.id);
+        list = $('<li>').text(task.task).append(deleteButton).attr('data-id',task.id);
       }
       return list;
     }

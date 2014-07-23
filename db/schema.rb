@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20140722221443) do
 
   create_table "tasks", force: true do |t|
     t.text     "task"
+    t.datetime "completed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
