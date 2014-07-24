@@ -6,11 +6,13 @@
   {{/if}}
     {{!-- complete todo --}}
     <td>
-      {{#unless completed_at}}
+      {{#if completed_at}}
+        <i class="fi-check mark-complete"></i>
+      {{else}}
         <a href="#" title="complete">
           <i class="fi-check"></i>
         </a>
-      {{/unless}}
+      {{/if}}
     </td>
 
     {{!-- todo name --}}

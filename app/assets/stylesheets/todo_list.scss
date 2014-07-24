@@ -35,17 +35,25 @@ $tertiary-color: #A7A7A7;
 
     td {
       i {
-        color: $tertiary-color;
+        color: $secondary-color;
       }
       i:hover {
         color: $primary-color;
       }
+      .mark-complete {
+        color: $primary-color;
+      }
+    }
+
+    .todo-name:hover {
+      cursor: text;
     }
 
     .completed {
 
       td {
         color: $tertiary-color;
+        text-decoration: line-through;
       }
     }
   }

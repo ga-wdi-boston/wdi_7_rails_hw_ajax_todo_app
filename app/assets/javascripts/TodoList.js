@@ -46,17 +46,17 @@ var TodoList = {
 
     if(this.$todoTable.data('list') === 'all-todos') {
       filteredTodos = todos;
-      targetFilter = "Total";
+      targetFilter = "total";
     } else if(this.$todoTable.data('list') === 'active-todos') {
       filteredTodos = todos.filter(function(todo) {
         return todo.completed_at === null;
       });
-      targetFilter = "Active";
+      targetFilter = "active";
     } else if(this.$todoTable.data('list') === 'completed-todos') {
       filteredTodos = todos.filter(function(todo) {
         return todo.completed_at !== null;
       });
-      targetFilter = "Completed";
+      targetFilter = "completed";
     }
 
     $('#todo-count').text(filteredTodos.length + " " + targetFilter);
