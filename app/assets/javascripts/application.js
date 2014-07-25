@@ -12,6 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require foundation
 //= require turbolinks
 //= require js-routes
+//= require handlebars.runtime
+//= require_tree ./templates
 //= require_tree .
+
+$(function(){ $(document).foundation(); });

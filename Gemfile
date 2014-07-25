@@ -21,3 +21,8 @@ gem 'active_model_serializers'
 
 # Add Handlebars template support
 gem 'handlebars_assets'
+
+gem 'foundation-rails'
+
+# add foundation icons
+gem 'foundation-icons-sass-rails'

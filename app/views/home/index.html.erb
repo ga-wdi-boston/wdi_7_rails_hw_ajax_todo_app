@@ -1,0 +1,30 @@
+<h1 class="text-center">todos</h1>
+
+<form id="new-todo-form">
+  <div class="row">
+    <div class="large-6 medium-8 small-10 small-centered columns">
+      <div class="row collapse">
+        <div class="small-10 columns">
+          <input id="new-todo-name" type="text" name="name" placeholder="enter a todo">
+        </div>
+        <div class="small-2 columns">
+          <button type="submit" class="add-button button postfix radius">add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="row">
+  <div class="todo-panel large-6 medium-8 small-10 small-centered columns" data-list="active" id="active-tasks">
+    <div class="todo-header">
+      <h3><span id="todo-count"></span></h3>
+    </div>
+    <dl id="todo-filters" class="sub-nav">
+      <dd class="active"><a href="#" id="all-todos">all</a></dd>
+      <dd><a href="#" id="active-todos">active</a></dd>
+      <dd><a href="#" id="completed-todos">completed</a></dd>
+    </dl>
+    <table id="todo-table" data-list="all-todos"></table>
+  </div>
+</div>
