@@ -31,6 +31,7 @@ var TodoList = {
 
   getTodos: function() {
     $.ajax({
+      dataType: 'json',
       url: Routes.todos_path(),
     })
     .done(this.showTodoList.bind(this));
@@ -80,6 +81,7 @@ var TodoList = {
     $name.val("");
 
     $.ajax({
+      dataType: 'json',
       url: Routes.todos_path(),
       type: "POST",
       data: newTodo
@@ -93,6 +95,7 @@ var TodoList = {
 
     event.preventDefault();
     $.ajax({
+      dataType: 'json',
       url: Routes.todo_path(todoID),
       type: "DELETE",
       data: todoItem
@@ -106,6 +109,7 @@ var TodoList = {
 
     event.preventDefault();
     $.ajax({
+      dataType: 'json',
       url: Routes.todo_path(todoID),
       type: "PATCH",
       data: todoItem
@@ -118,6 +122,7 @@ var TodoList = {
       todoItem = { todo: { id: todoID, in_editing: true }};
 
     $.ajax({
+      dataType: 'json',
       url: Routes.todo_path(todoID),
       type: "PATCH",
       data: todoItem
@@ -132,6 +137,7 @@ var TodoList = {
 
     event.preventDefault();
     $.ajax({
+      dataType: 'json',
       url: Routes.todo_path(todoID),
       type: "PATCH",
       data: todoItem

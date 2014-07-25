@@ -6,39 +6,26 @@ class TodosController < ApplicationController
   respond_to :json
 
   def index
-    @todos = Todo.all.order('created_at')
-    respond_with(@todos)
-  end
-
-  def show
-    @todo = Todo.find(params[:id])
-    respond_with(@todo)
+    todos = Todo.all.order('created_at')
+    respond_with(todos)
   end
 
   def create
-    @todo = Todo.new(todo_params)
-
-    if @todo.save
-      respond_with(@todo)
-    else
-      respond_with(@todo.errors)
-    end
+    todo = Todo.new(todo_params)
+    todo.save
+    respond_with(todo)
   end
 
   def update
-    @todo = Todo.find(params[:id])
-
-    if @todo.update(todo_params)
-      respond_with(@todo)
-    else
-      respond_with(@todo.errors)
-    end
+    todo = Todo.find(params[:id])
+    todo.update(todo_params)
+    respond_with(todo)
   end
 
   def destroy
-    @todo = Todo.find(params[:id])
-    @todo.destroy
-    respond_with(@todos)
+    todo = Todo.find(params[:id])
+    todo.destroy
+    respond_with(todo)
   end
 
   private
