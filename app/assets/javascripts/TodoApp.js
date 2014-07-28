@@ -6,14 +6,26 @@ var TodoApp = {
 
   initialize: function(){
     $('#new-todo').on('submit', $.proxy(this.itemSubmitted, this));
-    $('#todo-lists').on('click', '.complete-todo', $.proxy(this.itemCompleted, this));
-    $('#todo-lists').on('click', '.edit-todo', $.proxy(this.itemEdited, this));
-    $('#todo-lists').on('click', '.update-todo', $.proxy(this.itemUpdated, this));
-    $('#todo-lists').on('submit', '.name-form', $.proxy(this.itemUpdated, this));
-    $('#todo-lists').on('click', '.cancel-edit-todo', $.proxy(this.itemEditCanceled, this));
-    $('#todo-lists').on('click', '.delete-todo', $.proxy(this.itemDeleted, this));
-
+    this.createTodoHandler('click', '.complete-todo', this.itemCompleted);
+    this.createTodoHandler('click', '.edit-todo', this.itemEdited);
+    this.createTodoHandler('click', '.update-todo', this.itemUpdated);
+    this.createTodoHandler('submit', '.name-form', this.itemUpdated);
+    this.createTodoHandler('click', '.cancel-edit-todo', this.itemEditCanceled);
+    this.createTodoHandler('click', '.delete-todo', this.itemDeleted);
     this.createSortButtons();
+  },
+
+  createTodoHandler: function(event, selector, handler){
+    handler = $.proxy(handler, this);
+    var handlerWrapper = $.proxy(function(event){
+      var $todo = $(event.currentTarget).parents('.todo');
+      var todo = this.todos.filter(function(todo){
+        return todo.id === $todo.data('id');
+      })[0];
+      handler(todo, $todo);
+      event.preventDefault();
+    }, this);
+    $('#todo-lists').on(event, selector, handlerWrapper);
   },
 
   createSortButtons: function(){
@@ -45,15 +57,12 @@ var TodoApp = {
     event.preventDefault();
   },
 
-  itemCompleted: function(event){
-    var todo = this.todoFromButtonEvent(event);
+  itemCompleted: function(todo){
     todo.complete();
     this.rebuildLists();
   },
 
-  itemEdited: function(event){
-    var todo = this.todoFromButtonEvent(event);
-    var $todo = $(event.currentTarget).parents('.todo');
+  itemEdited: function(todo, $todo){
     $todo.find('.name-display').hide();
     $todo.find('.buttons-main').hide();
     $todo.find('.name-input').show().focus().val(todo.name());
@@ -61,9 +70,7 @@ var TodoApp = {
     $('button').not($todo.find('.buttons-edit button')).prop('disabled', true);
   },
 
-  itemUpdated: function(event){
-    var todo = this.todoFromButtonEvent(event);
-    var $todo = $(event.currentTarget).parents('.todo');
+  itemUpdated: function(todo, $todo){
     todo.rename($todo.find('.name-input').val());
     $('button').prop('disabled', false);
     this.rebuildLists();
@@ -74,8 +81,7 @@ var TodoApp = {
     this.rebuildLists();
   },
 
-  itemDeleted: function(event){
-    var todo = this.todoFromButtonEvent(event);
+  itemDeleted: function(todo){
     this.todos.splice(this.todos.indexOf(todo), 1);
     this.rebuildLists();
   },
@@ -103,10 +109,5 @@ var TodoApp = {
         appendTarget.append(todo.html());
       });
     }, this);
-  },
-
-  todoFromButtonEvent: function(event){
-    var targetId = $(event.currentTarget).parents('.todo').data('id');
-    return this.todos.filter(function(todo){ return todo.id === targetId; })[0];
   }
 };
