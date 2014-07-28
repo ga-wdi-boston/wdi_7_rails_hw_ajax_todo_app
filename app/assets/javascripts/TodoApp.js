@@ -13,6 +13,10 @@ var TodoApp = {
     $('#todo-lists').on('click', '.cancel-edit-todo', $.proxy(this.itemEditCanceled, this));
     $('#todo-lists').on('click', '.delete-todo', $.proxy(this.itemDeleted, this));
 
+    this.createSortButtons();
+  },
+
+  createSortButtons: function(){
     this.todoStatuses.forEach(function(status){
       var buttons = $('[data-list="' + status + '"] .sort-buttons');
 
