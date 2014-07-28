@@ -122,8 +122,9 @@ var TodoApp = {
   },
 
   // User completed a todo item
-  itemCompleted: function(todo){
+  itemCompleted: function(todo, $todo){
     var completedAt = new Date();
+    $todo.siblings('button').addBack().prop('disabled', true);
 
     $.ajax({
       url: Routes.todoPath(todo.id),
@@ -164,7 +165,9 @@ var TodoApp = {
   },
 
   // User deleted a todo item
-  itemDeleted: function(todo){
+  itemDeleted: function(todo, $todo){
+    $todo.siblings('button').addBack().prop('disabled', true);
+
     $.ajax({
       url: Routes.todoPath(todo.id),
       type: 'DELETE',
