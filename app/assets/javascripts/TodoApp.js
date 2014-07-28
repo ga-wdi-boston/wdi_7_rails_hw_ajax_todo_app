@@ -7,6 +7,10 @@ var TodoApp = {
   initialize: function(){
     $('#new-todo').on('submit', $.proxy(this.itemSubmitted, this));
     $('#todo-lists').on('click', '.complete-todo', $.proxy(this.itemCompleted, this));
+    $('#todo-lists').on('click', '.edit-todo', $.proxy(this.itemEdited, this));
+    $('#todo-lists').on('click', '.update-todo', $.proxy(this.itemUpdated, this));
+    $('#todo-lists').on('submit', '.name-form', $.proxy(this.itemUpdated, this));
+    $('#todo-lists').on('click', '.cancel-edit-todo', $.proxy(this.itemEditCanceled, this));
     $('#todo-lists').on('click', '.delete-todo', $.proxy(this.itemDeleted, this));
 
     this.todoStatuses.forEach(function(status){
@@ -43,6 +47,29 @@ var TodoApp = {
     this.rebuildLists();
   },
 
+  itemEdited: function(event){
+    var todo = this.todoFromButtonEvent(event);
+    var $todo = $(event.currentTarget).parents('.todo');
+    $todo.find('.name-display').hide();
+    $todo.find('.buttons-main').hide();
+    $todo.find('.name-input').show().focus().val(todo.name());
+    $todo.find('.buttons-edit').show();
+    $('button').not($todo.find('.buttons-edit button')).prop('disabled', true);
+  },
+
+  itemUpdated: function(event){
+    var todo = this.todoFromButtonEvent(event);
+    var $todo = $(event.currentTarget).parents('.todo');
+    todo.rename($todo.find('.name-input').val());
+    $('button').prop('disabled', false);
+    this.rebuildLists();
+  },
+
+  itemEditCanceled: function(){
+    $('button').prop('disabled', false);
+    this.rebuildLists();
+  },
+
   itemDeleted: function(event){
     var todo = this.todoFromButtonEvent(event);
     this.todos.splice(this.todos.indexOf(todo), 1);
@@ -75,7 +102,7 @@ var TodoApp = {
   },
 
   todoFromButtonEvent: function(event){
-    var targetId = $(event.currentTarget).data('id');
+    var targetId = $(event.currentTarget).parents('.todo').data('id');
     return this.todos.filter(function(todo){ return todo.id === targetId; })[0];
   }
 };
