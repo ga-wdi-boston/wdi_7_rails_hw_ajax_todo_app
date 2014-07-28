@@ -35,6 +35,7 @@
   white-space: nowrap;
 }
 
-.sort-buttons button {
+.sort-buttons button,
+.todo-list-title .status {
   text-transform: capitalize;
 }

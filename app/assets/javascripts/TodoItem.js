@@ -6,6 +6,9 @@ var TodoItem = function(name){
   this.completedAt = null;
 };
 
+TodoItem.statuses = ['todo', 'done'];
+TodoItem.sortableProperties = ['date', 'name'];
+
 TodoItem.nextId = 0;
 TodoItem.generateId = function(){
   TodoItem.nextId += 1;
@@ -30,7 +33,7 @@ TodoItem.prototype = {
   },
 
   status: function(){
-    return this.completedAt ? 'completed' : 'pending';
+    return this.completedAt ? 'done' : 'todo';
   },
 
   html: function(){

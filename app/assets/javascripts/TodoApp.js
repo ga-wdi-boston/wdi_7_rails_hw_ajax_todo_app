@@ -1,10 +1,15 @@
 var TodoApp = {
-  todos: [],
-  todoStatuses: ['pending', 'completed'],
-  currentSorts: { pending: 'date', completed: 'date' },
-  sortProperties: ['date', 'name'],
-
   initialize: function(){
+    this.todos = [];
+    this.currentSorts = {};
+    TodoItem.statuses.forEach(function(status, index){
+      this.currentSorts[status] = TodoItem.sortableProperties[0];
+      $('.todo-list').eq(index).
+        attr('data-status', status).
+        find('.count').text('0').end().
+        find('.status').text(status);
+    }, this);
+
     $('#new-todo').on('submit', $.proxy(this.itemSubmitted, this));
     this.createTodoHandler('click', '.complete-todo', this.itemCompleted);
     this.createTodoHandler('click', '.edit-todo', this.itemEdited);
@@ -29,10 +34,10 @@ var TodoApp = {
   },
 
   createSortButtons: function(){
-    this.todoStatuses.forEach(function(status){
-      var buttons = $('[data-list="' + status + '"] .sort-buttons');
+    TodoItem.statuses.forEach(function(status){
+      var buttons = $('[data-status="' + status + '"] .sort-buttons');
 
-      this.sortProperties.forEach(function(property){
+      TodoItem.sortableProperties.forEach(function(property){
         var button = $('<button>').
           attr('type', 'button').
           addClass('btn btn-default').
@@ -89,20 +94,20 @@ var TodoApp = {
   sortChanged: function(event){
     var button = $(event.currentTarget);
     button.parents('.sort-buttons').find('button').toggleClass('active');
-    this.currentSorts[button.parents('.todo-list').data('list')] = button.data('sort');
+    this.currentSorts[button.parents('.todo-list').data('status')] = button.data('sort');
     this.rebuildLists();
   },
 
   rebuildLists: function(){
     $('.todos').empty();
 
-    this.todoStatuses.forEach(function(status){
+    TodoItem.statuses.forEach(function(status){
       var currentSortProperty = this.currentSorts[status];
       var sortedTodosWithStatus = this.todos.
         filter(function(todo){ return todo.status() === status; }).
         sort(function(a, b){ return a[currentSortProperty]() < b[currentSortProperty]() ? -1 : 1; });
 
-      var todoList = $('[data-list="' + status + '"]');
+      var todoList = $('[data-status="' + status + '"]');
       var appendTarget = todoList.find('.todos');
       todoList.find('.count').text(sortedTodosWithStatus.length);
       sortedTodosWithStatus.forEach(function(todo){
