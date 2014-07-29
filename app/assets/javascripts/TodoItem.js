@@ -6,8 +6,8 @@ var TodoItem = function(name){
   this.completedAt = null;
 };
 
-TodoItem.statuses = ['todo', 'done'];
-TodoItem.sortableProperties = ['date', 'name'];
+TodoItem.statuses = ['todo', 'done']; // Values that `status` could return
+TodoItem.sortableProperties = ['date', 'name']; // Actually names of functions
 
 TodoItem.nextId = 0;
 TodoItem.generateId = function(){
