@@ -1,14 +1,11 @@
 var TodoApp = {
+  todos: [],
+  currentSorts: {},
+
   initialize: function(){
-    this.todos = [];
-    this.currentSorts = {};
-    TodoItem.statuses.forEach(function(status, index){
-      this.currentSorts[status] = TodoItem.sortableProperties[0];
-      $('.todo-list').eq(index).
-        attr('data-status', status).
-        find('.count').text('0').end().
-        find('.status').text(status);
-    }, this);
+    this.initializeSorts();
+    this.initializeLists();
+    this.createSortButtons();
 
     $('#new-todo').on('submit', $.proxy(this.itemSubmitted, this));
     this.createTodoHandler('click', '.complete-todo', this.itemCompleted);
@@ -17,20 +14,21 @@ var TodoApp = {
     this.createTodoHandler('submit', '.name-form', this.itemUpdated);
     this.createTodoHandler('click', '.cancel-edit-todo', this.itemEditCanceled);
     this.createTodoHandler('click', '.delete-todo', this.itemDeleted);
-    this.createSortButtons();
   },
 
-  createTodoHandler: function(event, selector, handler){
-    handler = $.proxy(handler, this);
-    var handlerWrapper = $.proxy(function(event){
-      var $todo = $(event.currentTarget).parents('.todo');
-      var todo = this.todos.filter(function(todo){
-        return todo.id === $todo.data('id');
-      })[0];
-      handler(todo, $todo);
-      event.preventDefault();
+  initializeSorts: function(){
+    TodoItem.statuses.forEach(function(status){
+      this.currentSorts[status] = TodoItem.sortableProperties[0];
     }, this);
-    $('#todo-lists').on(event, selector, handlerWrapper);
+  },
+
+  initializeLists: function(){
+    TodoItem.statuses.forEach(function(status, index){
+      $('.todo-list').eq(index).
+        attr('data-status', status).
+        find('.count').text('0').end().
+        find('.status').text(status);
+    }, this);
   },
 
   createSortButtons: function(){
@@ -48,6 +46,19 @@ var TodoApp = {
         buttons.append(button);
       }, this);
     }, this);
+  },
+
+  createTodoHandler: function(event, selector, handler){
+    handler = $.proxy(handler, this);
+    var handlerWrapper = $.proxy(function(event){
+      var $todo = $(event.currentTarget).parents('.todo');
+      var todo = this.todos.filter(function(todo){
+        return todo.id === $todo.data('id');
+      })[0];
+      handler(todo, $todo);
+      event.preventDefault();
+    }, this);
+    $('#todo-lists').on(event, selector, handlerWrapper);
   },
 
   itemSubmitted: function(event){
