@@ -4,7 +4,7 @@
 
 The goal of this assignment is to rebuild your [JavaScript todo app](https://github.com/ga-wdi-boston/wdi_6_js_hw_todo_app) as a fully functional single-page app, using Ajax JSON requests to a Rails backend. Initially you'll use JavaScript with manual jQuery element creation, as we did for the standalone version, but later we'll convert the app to use CoffeeScript and Handlebars templates.
 
-It might not be a good idea to start *directly* from the code you used in the previous assignment, due to probable architectural differences &ndash; but you are encouraged to copy techniques from it, or from the [example solution](https://github.com/ga-wdi-boston/wdi_6_js_hw_todo_app/tree/example).
+It might not be a good idea to start *directly* from the code you used in the previous assignment, due to probable architectural differences &ndash; but you are encouraged to copy techniques from it, or from the `only-js` branch of this repo (which is the example solution for the JavaScript-only todo app).
 
 ## Basic Functionality
 
