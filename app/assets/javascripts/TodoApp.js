@@ -136,10 +136,10 @@ var TodoApp = {
   // buttons in the app are disabled while editing except for the ones that will
   // either save or discard the edit.
   itemEdited: function(todo, $todo){
-    $todo.find('.name-display').hide();
-    $todo.find('.buttons-main').hide();
-    $todo.find('.name-input').show().focus().val(todo.name());
-    $todo.find('.buttons-edit').show();
+    $todo.find(
+      '.name-display, .buttons-main, .name-input, .buttons-edit'
+    ).toggleClass('hidden');
+    $todo.find('.name-input').focus().val(todo.name());
     $('button').not($todo.find('.buttons-edit button')).prop('disabled', true);
   },
 

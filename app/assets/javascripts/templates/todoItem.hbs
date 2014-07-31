@@ -1,0 +1,40 @@
+<tr class="todo" data-id="{{id}}">
+  <td class="name">
+    <span class="name-display">{{name}}</span>
+    <form class="name-form">
+      <input type="text" class="hidden name-input form-control" autocomplete="off">
+    </form>
+  </td>
+
+  <td class="date">
+    {{formatDate date}}
+  </td>
+
+  <td class="buttons">
+    <span class="buttons-main">
+      {{#unless completed}}
+        <button type="button" class="btn btn-success complete-todo">
+          <span class="glyphicon glyphicon-ok"></span> Done
+        </button>
+      {{/unless}}
+
+      <button type="button" class="btn btn-warning edit-todo">
+        <span class="glyphicon glyphicon-pencil"></span>
+      </button>
+
+      <button type="button" class="btn btn-danger delete-todo">
+        <span class="glyphicon glyphicon-remove"></span>
+      </button>
+    </span>
+
+    <span class="hidden buttons-edit">
+      <button type="button" class="btn btn-success update-todo">
+        Save
+      </button>
+
+      <button type="button" class="btn btn-danger cancel-edit-todo">
+        Cancel
+      </button>
+    </span>
+  </td>
+</tr>
