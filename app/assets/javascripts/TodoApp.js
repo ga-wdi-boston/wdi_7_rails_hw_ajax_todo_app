@@ -3,12 +3,12 @@ var TodoApp = {
   currentSorts: {}, // Keeps track of which list is sorted by which property
 
   initialize: function(){
-    this.initializeLists();
     this.initializeSorts();
-    this.createSortButtons();
+    this.initializeLists();
     this.loadInitialData();
 
     $('#new-todo').on('submit', $.proxy(this.itemSubmitted, this));
+    $('.sort-buttons').on('click', 'button', $.proxy(this.sortChanged, this));
     this.createTodoHandler('click', '.complete-todo', this.itemCompleted);
     this.createTodoHandler('click', '.edit-todo', this.itemEdited);
     this.createTodoHandler('click', '.update-todo', this.itemUpdated);
@@ -17,17 +17,13 @@ var TodoApp = {
     this.createTodoHandler('click', '.delete-todo', this.itemDeleted);
   },
 
-  // Link each of the todo lists already present in the document to the
-  // same-indexed status in the list of possible todo statuses (this could be
-  // done much more cleanly by just generating the list markup directly from
-  // the statuses, but that would be waaay too much jQuery)
+  // Render the initial list markup and sort buttons, according to the possible
+  // todo item statuses and sortable properties
   initializeLists: function(){
-    TodoItem.statuses.forEach(function(status, index){
-      $('.todo-list').eq(index).
-        attr('data-status', status).
-        find('.count').text('0').end().
-        find('.status').text(status);
-    }, this);
+    $('#todo-lists').append(HandlebarsTemplates.todoList({
+      statuses: TodoItem.statuses,
+      sortableProperties: TodoItem.sortableProperties
+    }));
   },
 
   // Set the active sort property for each list to the first sortable property
@@ -35,24 +31,6 @@ var TodoApp = {
   initializeSorts: function(){
     TodoItem.statuses.forEach(function(status){
       this.currentSorts[status] = TodoItem.sortableProperties[0];
-    }, this);
-  },
-
-  // Generate sort buttons on each todo list for each sortable property of todos
-  createSortButtons: function(){
-    TodoItem.statuses.forEach(function(status){
-      var buttons = $('[data-status="' + status + '"] .sort-buttons');
-
-      TodoItem.sortableProperties.forEach(function(property){
-        var button = $('<button>').
-          attr('type', 'button').
-          addClass('btn btn-default').
-          data('sort', property).
-          text(property).
-          on('click', $.proxy(this.sortChanged, this));
-        if(this.currentSorts[status] === property){ button.addClass('active'); }
-        buttons.append(button);
-      }, this);
     }, this);
   },
 
@@ -173,8 +151,8 @@ var TodoApp = {
   // User changed the sorting of a list
   sortChanged: function(event){
     var button = $(event.currentTarget);
-    button.parents('.sort-buttons').find('button').toggleClass('active');
-    this.currentSorts[button.parents('.todo-list').data('status')] = button.data('sort');
+    var status = button.parents('.todo-list').data('status');
+    this.currentSorts[status] = button.data('sort');
     this.rebuildLists();
   },
 
@@ -183,8 +161,12 @@ var TodoApp = {
   // any todo is created, updated, or deleted. This "destroy-the-world" approach
   // is simple, but wouldn't be very efficient with large numbers of objects.
   rebuildLists: function(){
-    $('.todos').empty();
+    $('[data-sort]').removeClass('active');
+    $.each(this.currentSorts, function(status, property){
+      $('[data-status=' + status + '] [data-sort=' + property + ']').addClass('active');
+    });
 
+    $('.todos').empty();
     TodoItem.statuses.forEach(function(status){
       var currentSortProperty = this.currentSorts[status];
       var sortedTodosWithStatus = this.todos.

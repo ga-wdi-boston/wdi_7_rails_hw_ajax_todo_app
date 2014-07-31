@@ -1,0 +1,19 @@
+{{#each statuses}}
+  <div class="col-md-6">
+    <div class="panel panel-{{panelType .}} todo-list" data-status="{{.}}">
+      <div class="panel-heading list-header">
+        <div class="btn-group pull-right sort-buttons">
+          {{#each ../sortableProperties}}
+            <button type="button" class="btn btn-default" data-sort="{{.}}">
+              {{.}}
+            </button>
+          {{/each}}
+        </div>
+        <h4 class="todo-list-title">
+          <span class="count">0</span> {{.}}
+        </h4>
+      </div>
+      <table class="table todos"></table>
+    </div>
+  </div>
+{{/each}}
