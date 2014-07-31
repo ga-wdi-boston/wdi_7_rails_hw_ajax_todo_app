@@ -123,19 +123,12 @@ var TodoApp = {
   // User completed a todo item
   itemCompleted: function(todo, $todo){
     var completedAt = new Date();
-    $todo.find('button').prop('disabled', true);
 
-    $.ajax({
-      url: Routes.todoPath(todo.id),
-      type: 'PATCH',
-      dataType: 'json',
-      data: { todo: { completed_at: completedAt }}
-    })
+    this.todoAjax(todo, $todo, 'PATCH', { completed_at: completedAt })
     .done($.proxy(function(){
       todo.complete(completedAt);
       this.rebuildLists();
-    }, this))
-    .fail(this.genericFailure);
+    }, this));
   },
 
   // User started editing a todo item. Since most app actions cause the lists to
@@ -153,20 +146,13 @@ var TodoApp = {
   // User finished editing a todo item
   itemUpdated: function(todo, $todo){
     var name = $todo.find('.name-input').val();
-    $todo.find('button').prop('disabled', true);
 
-    $.ajax({
-      url: Routes.todoPath(todo.id),
-      type: 'PATCH',
-      dataType: 'json',
-      data: { todo: { name: name }}
-    })
+    this.todoAjax(todo, $todo, 'PATCH', { name: name })
     .done($.proxy(function(){
       todo.rename(name);
       $('button').prop('disabled', false);
       this.rebuildLists();
-    }, this))
-    .fail(this.genericFailure);
+    }, this));
   },
 
   // User canceled editing a todo item
@@ -177,18 +163,11 @@ var TodoApp = {
 
   // User deleted a todo item
   itemDeleted: function(todo, $todo){
-    $todo.find('button').prop('disabled', true);
-
-    $.ajax({
-      url: Routes.todoPath(todo.id),
-      type: 'DELETE',
-      dataType: 'json'
-    })
+    this.todoAjax(todo, $todo, 'DELETE')
     .done($.proxy(function(){
       this.todos.splice(this.todos.indexOf(todo), 1);
       this.rebuildLists();
-    }, this))
-    .fail(this.genericFailure);
+    }, this));
   },
 
   // User changed the sorting of a list
@@ -219,6 +198,24 @@ var TodoApp = {
         appendTarget.append(todo.html());
       });
     }, this);
+  },
+
+  // Generic Ajax function to update or delete a specific todo item. Returns the
+  // same object returned by `$.ajax`, so custom `done` handlers may be chained.
+  // Ensures all buttons related to the todo are disabled during the request.
+  todoAjax: function(todo, $todo, type, todoAttributes){
+    $todo.find('button').prop('disabled', true);
+
+    return $.ajax({
+      url: Routes.todoPath(todo.id),
+      type: type,
+      dataType: 'json',
+      data: { todo: todoAttributes }
+    })
+    .fail(this.genericFailure)
+    .always(function(){
+      $todo.find('button').prop('disabled', false);
+    });
   },
 
   // Handler for failed Ajax requests that we don't know how to recover from
