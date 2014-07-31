@@ -124,7 +124,7 @@ var TodoApp = {
   // User completed a todo item
   itemCompleted: function(todo, $todo){
     var completedAt = new Date();
-    $todo.siblings('button').addBack().prop('disabled', true);
+    $todo.find('button').prop('disabled', true);
 
     $.ajax({
       url: Routes.todoPath(todo.id),
@@ -133,7 +133,7 @@ var TodoApp = {
       data: { todo: { completed_at: completedAt }}
     })
     .done($.proxy(function(){
-      todo.completedAt = completedAt;
+      todo.complete(completedAt);
       this.rebuildLists();
     }, this))
     .fail(this.genericFailure);
@@ -153,9 +153,21 @@ var TodoApp = {
 
   // User finished editing a todo item
   itemUpdated: function(todo, $todo){
-    todo.rename($todo.find('.name-input').val());
-    $('button').prop('disabled', false);
-    this.rebuildLists();
+    var name = $todo.find('.name-input').val();
+    $todo.find('button').prop('disabled', true);
+
+    $.ajax({
+      url: Routes.todoPath(todo.id),
+      type: 'PATCH',
+      dataType: 'json',
+      data: { todo: { name: name }}
+    })
+    .done($.proxy(function(){
+      todo.rename(name);
+      $('button').prop('disabled', false);
+      this.rebuildLists();
+    }, this))
+    .fail(this.genericFailure);
   },
 
   // User canceled editing a todo item
@@ -166,7 +178,7 @@ var TodoApp = {
 
   // User deleted a todo item
   itemDeleted: function(todo, $todo){
-    $todo.siblings('button').addBack().prop('disabled', true);
+    $todo.find('button').prop('disabled', true);
 
     $.ajax({
       url: Routes.todoPath(todo.id),

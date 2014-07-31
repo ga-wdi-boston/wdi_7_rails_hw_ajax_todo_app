@@ -22,8 +22,8 @@ TodoItem.prototype = {
     this._name = name;
   },
 
-  complete: function(){
-    this.completedAt = new Date();
+  complete: function(date){
+    this.completedAt = date;
   },
 
   status: function(){
