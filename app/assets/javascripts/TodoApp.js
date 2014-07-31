@@ -110,8 +110,7 @@ var TodoApp = {
     }, this))
     .fail($.proxy(function(jqXHR){
       if(jqXHR.status === 422){
-        // TODO: Handle validation errors
-        // (doesn't matter right now since the only validation is presence)
+        this.validationFailure(jqXHR.responseJSON.errors, $form);
       } else {
         this.genericFailure(jqXHR);
       }
@@ -222,7 +221,24 @@ var TodoApp = {
     }, this);
   },
 
+  // Handler for failed Ajax requests that we don't know how to recover from
   genericFailure: function(jqXHR){
     alert('Error ' + jqXHR.status + ' occurred. Try refreshing maybe?');
+  },
+
+  // Handler for Ajax form submissions that failed due to a validation error
+  validationFailure: function(errors, $form){
+    var errorString = $.map(errors, function(messages, attribute){
+      return messages.map(function(message){
+        return attribute + ' ' + message;
+      }).join(', ');
+    }).join(', ');
+
+    $form.tooltip('destroy');
+    $form.tooltip(
+      { title: errorString, trigger: 'manual', placement: 'left' }
+    );
+    $form.tooltip('show');
+    setTimeout(function(){ $form.tooltip('destroy'); }, 2000);
   }
 };

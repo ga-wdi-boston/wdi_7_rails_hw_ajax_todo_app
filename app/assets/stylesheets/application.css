@@ -36,6 +36,7 @@
 }
 
 .sort-buttons button,
-.todo-list-title .status {
+.todo-list-title .status,
+.tooltip-inner::first-letter {
   text-transform: capitalize;
 }
